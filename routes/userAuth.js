@@ -4,7 +4,6 @@ router.use(express.json());
 
 const Masrapt = require('../db/masrapt')
 
-
 router.get('/', express.json(), async (req, res) => {
 	const users = await Masrapt.get_users()
 

@@ -15,6 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
+-- Create database db_masrapt
+--
+
+DROP DATABASE IF EXISTS `db_masrapt`;
+CREATE DATABASE `db_masrapt`;
+use `db_masrapt`;
 
 --
 -- Table structure for table `users`
@@ -44,8 +51,9 @@ CREATE TABLE `routes` (
   `name` varchar(40) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
   `locations` varchar(120) DEFAULT NULL,
-  `idcurso` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `id_coordinates` int NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_coordinates_1` FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -66,9 +74,7 @@ CREATE TABLE `routes_coordinates` (
   `longitude` decimal NOT NULL,
   `latitude` decimal DEFAULT NULL,
   `altitude` decimal DEFAULT NULL,
-  `id_route` int NOT NULL,
-  PRIMARY KEY (`id_coordinates`),
-  CONSTRAINT `fk_docente_1` FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
+  PRIMARY KEY (`id_coordinates`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
