@@ -48,12 +48,12 @@ DROP TABLE IF EXISTS `routes`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `routes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `locations` varchar(120) DEFAULT NULL,
-  `id_coordinates` int NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_coordinates_1` FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
+  `active_bus` int NOT NULL,
+  `route_timer` int NOT NULL,
+  `locations` varchar(355) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -74,7 +74,9 @@ CREATE TABLE `routes_coordinates` (
   `longitude` decimal NOT NULL,
   `latitude` decimal DEFAULT NULL,
   `altitude` decimal DEFAULT NULL,
-  PRIMARY KEY (`id_coordinates`)
+  `id_route` int NOT NULL,
+  PRIMARY KEY (`id_coordinates`),
+  CONSTRAINT FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
