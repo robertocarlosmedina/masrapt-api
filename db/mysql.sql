@@ -32,8 +32,8 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) NOT NULL,
-  `nome` varchar(100) NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `hash_password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
@@ -71,14 +71,37 @@ DROP TABLE IF EXISTS `routes_coordinates`;
 CREATE TABLE `routes_coordinates` (
   `id_coordinates` int NOT NULL AUTO_INCREMENT,
   `sequence_number` int NOT NULL,
-  `longitude` decimal NOT NULL,
-  `latitude` decimal DEFAULT NULL,
-  `altitude` decimal DEFAULT NULL,
+  `longitude` Decimal(30,20) NOT NULL,
+  `latitude` Decimal(30,20) DEFAULT NULL,
+  `altitude` Decimal(30,20) DEFAULT NULL,
   `id_route` int NOT NULL,
   PRIMARY KEY (`id_coordinates`),
   CONSTRAINT FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `bus`
+--
+
+DROP TABLE IF EXISTS `bus`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bus` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `registration_plate` varchar(70) NOT NULL,
+  `current_sequence_number` int NULL,
+  `state` boolean NOT NULL,
+  `id_route` int NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT FOREIGN KEY (`id_route`) REFERENCES `routes` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+/*!40000 ALTER TABLE `routes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
