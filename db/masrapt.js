@@ -126,7 +126,7 @@ class Masrapt {
 		if(id !== null){
 			sql = `select * from routes_coordinates WHERE id_coordinates=${id}`;
 		}
-		else if(id_route){
+		else if(id_route !== null){
 			sql = `select * from routes_coordinates WHERE id_route=${id_route}`;
 		}
 		else{
@@ -165,7 +165,7 @@ class Masrapt {
 		if(id_route){
 			sql = `DELETE FROM routes_coordinates WHERE id_route=${id_route}`
 		}
-		
+
 		if(id){
 			sql = `DELETE FROM routes_coordinates WHERE id_coordinates=${id}`
 		}
