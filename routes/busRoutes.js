@@ -7,7 +7,7 @@ const Masrapt = require('../db/masrapt')
 
 router.get('/', express.json(), async (req, res) => {
 	const all_routes = await Masrapt.get_routes()
-	console.log("okokokokokok")
+	// console.log("okokokokokok")
 
 	if (!all_routes) return res.sendStatus(500) // internal error
 
