@@ -152,6 +152,18 @@ router.post('/coordinates/create', express.json(), async (req, res) => {
 	return res.json(last_coordinate)
 });
 
+router.post('/get_bus_position', express.json(), async (req, res) => {
+
+	const { bus_id, id_route, sequence_number  } = req.body;
+	const new_coordinate = await Masrapt.create_route_coordinate(sequence_number, longitude, latitude, altitude, id_route);
+	const all_coordinate = await Masrapt.get_coordinates()
+	const last_coordinate = all_coordinate[all_coordinate.length-1]
+
+	if(!new_coordinate) return res.sendStatus(500);
+	
+	return res.json(last_coordinate)
+});
+
 // router.put('/edit/:id', express.json(), async (req, res) => {
 
 // 	const { id } = req.params;  

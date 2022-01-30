@@ -121,10 +121,14 @@ class Masrapt {
 	 * @param {*} id 
 	 * @returns 
 	 */
-	 static get_coordinates =  async (id = null, id_route = null) => {
+	 static get_coordinates =  async (id = null, id_route = null, sequence_number = null) => {
 		let sql;
 		if(id !== null){
 			sql = `select * from routes_coordinates WHERE id_coordinates=${id}`;
+		}
+		else if(id_route !== null && sequence_number !== null){
+			sql = `select * from routes_coordinates WHERE id_route=${id_route} and 
+				sequence_number=${sequence_number}`;
 		}
 		else if(id_route !== null){
 			sql = `select * from routes_coordinates WHERE id_route=${id_route}`;
@@ -173,6 +177,88 @@ class Masrapt {
 		const results = await DB.Delete(sql)
 		return results
 	}
+
+	/* -------------------------------------------------------------------------- */
+	/* Sql connectors related to the bus information */
+
+	/**
+	 * 
+	 * @param {*} id 
+	 * @returns 
+	 */
+	 static get_busInfo =  async (id = null, id_route = null) => {
+		let sql;
+		if(id !== null){
+			sql = `select * from bus WHERE id=${id}`;
+		}
+		else if(id_route !== null){
+			sql = `select * from bus WHERE id_route=${id_route}`;
+		}
+		else{
+			sql = `select * from bus`;
+		}
+		
+		return await DB.Select(sql)
+	}
+
+	/**
+	 * 
+	 * @param {*} sequence_number 
+	 * @param {*} longitude 
+	 * @param {*} latitude 
+	 * @param {*} altitude 
+	 * @param {*} id_route 
+	 * @returns 
+	 */
+	static create_busInfo =  async (registration_plate, current_sequence_number, state, id_route) => {
+		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, state, id_route) VALUES 
+			("${registration_plate}", "${current_sequence_number}", ${state}, "${id_route}");`		
+
+		const results = await DB.Insert(sql); 
+
+		return results
+	}
+
+	/**
+	 * 
+	 * @param {*} sequence_number 
+	 * @param {*} longitude 
+	 * @param {*} latitude 
+	 * @param {*} altitude 
+	 * @param {*} id_route 
+	 * @returns 
+	 */
+	 static updateBusSequenceNumber =  async (id_bus, current_sequence_number) => {
+		const sql = `UPDATE bus
+		SET current_sequence_number="${current_sequence_number}"
+		WHERE id="${id_bus}";`		
+
+		const results = await DB.Insert(sql); 
+
+		return results
+	}
+
+	/**
+	 * 
+	 * @param {*} id 
+	 * @param {*} id_route
+ 	 * @returns 
+	 */
+	 static delete_busInfo =  async (id = null, id_route = null) => {
+		let sql;
+
+		if(id_route){
+			sql = `DELETE FROM bus WHERE id_route=${id_route}`
+		}
+
+		if(id){
+			sql = `DELETE FROM bus WHERE id=${id}`
+		}
+
+		const results = await DB.Delete(sql)
+		return results
+	}
+
 }
 
 module.exports = Masrapt
