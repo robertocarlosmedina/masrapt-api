@@ -92,6 +92,8 @@ CREATE TABLE `bus` (
   `id` int NOT NULL AUTO_INCREMENT,
   `registration_plate` varchar(70) NOT NULL,
   `current_sequence_number` int NULL,
+  `longitude` Decimal(30,20) NOT NULL,
+  `latitude` Decimal(30,20) DEFAULT NULL,
   `state` boolean NOT NULL,
   `id_route` int NOT NULL,
   PRIMARY KEY (`id`),

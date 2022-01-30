@@ -210,9 +210,9 @@ class Masrapt {
 	 * @param {*} id_route 
 	 * @returns 
 	 */
-	static create_busInfo =  async (registration_plate, current_sequence_number, state, id_route) => {
-		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, state, id_route) VALUES 
-			("${registration_plate}", "${current_sequence_number}", ${state}, "${id_route}");`		
+	static create_busInfo =  async (registration_plate, current_sequence_number, longitude, latitude, state, id_route) => {
+		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, longitude, latitude, state, id_route) VALUES 
+			("${registration_plate}", "${current_sequence_number}", "${longitude}", "${latitude}", ${state}, "${id_route}");`		
 
 		const results = await DB.Insert(sql); 
 
@@ -228,9 +228,10 @@ class Masrapt {
 	 * @param {*} id_route 
 	 * @returns 
 	 */
-	 static updateBusSequenceNumber =  async (id_bus, current_sequence_number) => {
+	 static updateBusSequenceNumber =  async (id_bus, current_sequence_number, longitude, latitude) => {
 		const sql = `UPDATE bus
-		SET current_sequence_number="${current_sequence_number}"
+		SET 
+		current_sequence_number="${current_sequence_number}", longitude=${longitude}, latitude=${latitude}
 		WHERE id="${id_bus}";`		
 
 		const results = await DB.Insert(sql); 
