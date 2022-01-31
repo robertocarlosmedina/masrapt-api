@@ -130,8 +130,8 @@ router.get('/coordinates/:id', express.json(), async (req, res) => {
 
 router.post('/create', express.json(), async (req, res) => {
 
-	const { name, description, active_bus, route_timer, locations } = req.body;
-	const new_route = await Masrapt.create_route(name, description, active_bus, route_timer, locations);
+	const { name, description, active_bus, route_timer, locations, route_color } = req.body;
+	const new_route = await Masrapt.create_route(name, description, active_bus, route_timer, locations, route_color);
 	const all_routes = await Masrapt.get_routes()
 	const last_route = all_routes[all_routes.length-1]
 

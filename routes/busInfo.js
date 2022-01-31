@@ -13,18 +13,22 @@ router.get('/', express.json(), async (req, res) => {
 
 	return res.json(
 	    {
-			busInfo: all_bus.map((bus) => ({
+			bus: all_bus.map((bus) => ({
                 id: bus.id,
 				registration_plate: bus.registration_plate, 
                 current_sequence_number: bus.current_sequence_number,
                 longitude: bus.longitude,
                 latitude: bus.latitude,
                 state: bus.state, 
-                id_route: bus.id_route
+                id_route: bus.id_route,
+                route_color: bus.route_color,
+                passengers_number: bus.passengers_number,
+                in_a_bus_stop: bus.in_a_bus_stop
 			}))
 		}
 	)
 });
+
 
 router.get('/get_a_busInfo/:id', express.json(), async (req, res) => {
 
@@ -43,14 +47,27 @@ router.get('/get_a_busInfo/:id', express.json(), async (req, res) => {
             longitude: busInfo[0].longitude,
             latitude: busInfo[0].latitude,
             state: busInfo[0].state, 
-            id_route: busInfo[0].id_route
+            id_route: busInfo[0].id_route,
+            route_color: busInfo[0].route_color,
+            passengers_number: busInfo[0].passengers_number,
+            in_a_bus_stop: busInfo[0].in_a_bus_stop
 		}
 	)
 });
 
+router.post('/update_passenger_number', express.json(), async (req, res) => {
+
+	const { id_bus, passengers_number } = req.body;
+    const bus_update = await Masrapt.updateBusPassengerNumber(id_bus, passengers_number)
+	if(!bus_update) return res.sendStatus(500);
+	
+	return res.sendStatus(200)
+});
+
 router.post('/create', express.json(), async (req, res) => {
 
-	const { registration_plate, current_sequence_number, state, id_route  } = req.body;
+	const { registration_plate, current_sequence_number, state, id_route } = req.body;
+    const route_info = await Masrapt.get_routes(id_route)
     const coordinates_info = await Masrapt.get_coordinates(null, id_route)
 	const new_bus = await Masrapt.create_busInfo(
         registration_plate, 
@@ -58,7 +75,8 @@ router.post('/create', express.json(), async (req, res) => {
         coordinates_info[0].longitude,
         coordinates_info[0].latitude,
         state, 
-        id_route
+        id_route,
+        route_info[0].route_color
     );
 	const all_bus = await Masrapt.get_busInfo()
 	const last_bus = all_bus[all_bus.length-1]
@@ -77,16 +95,17 @@ const get_coordinates_info = async (id_bus, id_route, current_sequence_number) =
     if (!coordinates_info) return res.sendStatus(500) // internal error
     const updateBusSequenceNumber = get_updateBus_info(
         id_bus, coordinates_info[0].sequence_number,
-        coordinates_info[0].longitude, coordinates_info[0].latitude
+        coordinates_info[0].longitude, coordinates_info[0].latitude,
+        coordinates_info[0].is_a_bus_stop
     )
     if(!updateBusSequenceNumber) return res.sendStatus(500);
     return coordinates_info
 }
 
-const get_updateBus_info = async (bus_id, current_sequence_number, longitude, latitude) => {
+const get_updateBus_info = async (bus_id, current_sequence_number, longitude, latitude, in_a_bus_stop) => {
     const updateBusSequenceNumber = await Masrapt.updateBusSequenceNumber(
         bus_id, current_sequence_number,
-        longitude, latitude
+        longitude, latitude, in_a_bus_stop
     )
     if (!updateBusSequenceNumber) return res.sendStatus(500) // internal error
     return updateBusSequenceNumber
@@ -124,7 +143,7 @@ router.post('/update_all_bus_position', express.json(), async (req, res) => {
     return res.sendStatus(200)
 });
 
-router.post('/get_bus_position', express.json(), async (req, res) => {
+router.post('/update_a_bus_position', express.json(), async (req, res) => {
 
 	const { bus_id, id_route  } = req.body;
 	const bus_info = await Masrapt.get_busInfo(bus_id);
@@ -146,16 +165,13 @@ router.post('/get_bus_position', express.json(), async (req, res) => {
     )
     const updateBusSequenceNumber = await Masrapt.updateBusSequenceNumber(
         bus_id, coordinates_info[0].sequence_number,
-        coordinates_info[0].longitude, coordinates_info[0].latitude
+        coordinates_info[0].longitude, coordinates_info[0].latitude,
+        coordinates_info[0].is_a_bus_stop
         )
 
 	if((!updateBusSequenceNumber) || (!bus_info) || (!coordinates_info)) return res.sendStatus(500);
 	
-	return res.json({
-        id_route: coordinates_info[0].id_route,
-        longitude: coordinates_info[0].longitude,
-        latitude: coordinates_info[0].latitude
-    })
+	return res.sendStatus(200)
 });
 
 router.delete('/delete/:id', express.json(), async (req, res) => {

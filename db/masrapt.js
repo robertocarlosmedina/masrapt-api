@@ -92,9 +92,9 @@ class Masrapt {
 	 * @param {*} locations 
 	 * @returns 
 	 */
-	static create_route =  async (name, description, active_bus, route_timer, locations) => {
-		const sql = `INSERT INTO routes (name, description, active_bus, route_timer, locations) VALUES 
-			("${name}", "${description}", "${active_bus}", "${route_timer}", "${locations}");`		
+	static create_route =  async (name, description, active_bus, route_timer, locations, route_color) => {
+		const sql = `INSERT INTO routes (name, description, active_bus, route_timer, locations, route_color) VALUES 
+			("${name}", "${description}", "${active_bus}", "${route_timer}", "${locations}", "${route_color}");`		
 
 		const results = await DB.Insert(sql);
 
@@ -210,9 +210,9 @@ class Masrapt {
 	 * @param {*} id_route 
 	 * @returns 
 	 */
-	static create_busInfo =  async (registration_plate, current_sequence_number, longitude, latitude, state, id_route) => {
-		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, longitude, latitude, state, id_route) VALUES 
-			("${registration_plate}", "${current_sequence_number}", "${longitude}", "${latitude}", ${state}, "${id_route}");`		
+	static create_busInfo =  async (registration_plate, current_sequence_number, longitude, latitude, state, id_route, route_color) => {
+		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, longitude, latitude, state, id_route, route_color) VALUES 
+			("${registration_plate}", "${current_sequence_number}", "${longitude}", "${latitude}", ${state}, "${id_route}", "${route_color}");`		
 
 		const results = await DB.Insert(sql); 
 
@@ -228,10 +228,31 @@ class Masrapt {
 	 * @param {*} id_route 
 	 * @returns 
 	 */
-	 static updateBusSequenceNumber =  async (id_bus, current_sequence_number, longitude, latitude) => {
+	 static updateBusSequenceNumber =  async (id_bus, current_sequence_number, longitude, latitude, in_a_bus_stop) => {
 		const sql = `UPDATE bus
 		SET 
-		current_sequence_number="${current_sequence_number}", longitude=${longitude}, latitude=${latitude}
+		current_sequence_number="${current_sequence_number}", longitude=${longitude}, 
+		latitude=${latitude}, in_a_bus_stop=${in_a_bus_stop}
+		WHERE id="${id_bus}";`		
+
+		const results = await DB.Insert(sql); 
+
+		return results
+	}
+
+	/**
+	 * 
+	 * @param {*} sequence_number 
+	 * @param {*} longitude 
+	 * @param {*} latitude 
+	 * @param {*} altitude 
+	 * @param {*} id_route 
+	 * @returns 
+	 */
+	 static updateBusPassengerNumber =  async (id_bus, passengers_number) => {
+		const sql = `UPDATE bus
+		SET 
+		passengers_number="${passengers_number}"
 		WHERE id="${id_bus}";`		
 
 		const results = await DB.Insert(sql); 
