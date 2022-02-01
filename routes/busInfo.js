@@ -6,8 +6,16 @@ const Masrapt = require('../db/masrapt');
 const { all } = require('./busRoutes');
 
 
+const getRouteName = (all_routes, id_route) => {
+    const related_route = all_routes.filter( (route) =>{
+        return route.id === id_route
+    })
+    return related_route[0].name
+}
+
 router.get('/', express.json(), async (req, res) => {
 	const all_bus = await Masrapt.get_busInfo()
+    const all_routes = await Masrapt.get_routes()
 
 	if (!all_bus) return res.sendStatus(500) // internal error
 
@@ -23,7 +31,9 @@ router.get('/', express.json(), async (req, res) => {
                 id_route: bus.id_route,
                 route_color: bus.route_color,
                 passengers_number: bus.passengers_number,
-                in_a_bus_stop: bus.in_a_bus_stop
+                in_a_bus_stop: bus.in_a_bus_stop,
+                total_seats: bus.total_seats,
+                route_name: getRouteName(all_routes, bus.id_route)
 			}))
 		}
 	)
@@ -50,7 +60,8 @@ router.get('/get_a_busInfo/:id', express.json(), async (req, res) => {
             id_route: busInfo[0].id_route,
             route_color: busInfo[0].route_color,
             passengers_number: busInfo[0].passengers_number,
-            in_a_bus_stop: busInfo[0].in_a_bus_stop
+            in_a_bus_stop: busInfo[0].in_a_bus_stop,
+            total_seats: busInfo[0].total_seats
 		}
 	)
 });

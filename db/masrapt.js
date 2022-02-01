@@ -211,8 +211,8 @@ class Masrapt {
 	 * @returns 
 	 */
 	static create_busInfo =  async (registration_plate, current_sequence_number, longitude, latitude, state, id_route, route_color) => {
-		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, longitude, latitude, state, id_route, route_color) VALUES 
-			("${registration_plate}", "${current_sequence_number}", "${longitude}", "${latitude}", ${state}, "${id_route}", "${route_color}");`		
+		const sql = `INSERT INTO bus (registration_plate, current_sequence_number, longitude, latitude, state, id_route, route_color, total_seats) VALUES 
+			("${registration_plate}", "${current_sequence_number}", "${longitude}", "${latitude}", ${state}, "${id_route}", "${route_color}", 30);`		
 
 		const results = await DB.Insert(sql); 
 
