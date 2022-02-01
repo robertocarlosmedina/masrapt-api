@@ -142,6 +142,16 @@ class Masrapt {
 
 	/**
 	 * 
+	 * @param {*} id 
+	 * @returns 
+	 */
+	 static get_coordinates_that_are_bus_stop =  async () => {
+		let sql = `select * from routes_coordinates where is_a_bus_stop=1`;
+		return await DB.Select(sql)
+	 }
+
+	/**
+	 * 
 	 * @param {*} sequence_number 
 	 * @param {*} longitude 
 	 * @param {*} latitude 

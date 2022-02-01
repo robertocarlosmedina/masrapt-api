@@ -164,23 +164,12 @@ router.post('/get_bus_position', express.json(), async (req, res) => {
 	return res.json(last_coordinate)
 });
 
-// router.put('/edit/:id', express.json(), async (req, res) => {
-
-// 	const { id } = req.params;  
-// 	const { password } = req.body;
-// 	const edited_user = await Masrapt.edit_user(id, password);
-
-// 	if(!edited_user) return res.sendStatus(500);
-	
-// 	return res.json("Elemento alterado com sucesso.");
-// });
-
 router.delete('/delete/:id', express.json(), async (req, res) => {
 	const { id } = req.params;
 	const deletedClass = await Masrapt.delete_route(id)
 
 	if (!deletedClass) return res.sendStatus(404) //  internal error
-	return res.json(res.sendStatus(200))
+	return res.sendStatus(200)
 });
 
 router.delete('/coordinate/delete/:id', express.json(), async (req, res) => {
@@ -188,7 +177,7 @@ router.delete('/coordinate/delete/:id', express.json(), async (req, res) => {
 	const coordinate = await Masrapt.delete_coordinate(id)
 
 	if (!coordinate) return res.sendStatus(404) // internal error
-	return res.json(res.sendStatus(200))
+	return res.sendStatus(200)
 });
 
 router.delete('/route_coordinates/delete/:route_id', express.json(), async (req, res) => {
@@ -196,7 +185,7 @@ router.delete('/route_coordinates/delete/:route_id', express.json(), async (req,
 	const coordinate = await Masrapt.delete_coordinate(id_route = route_id)
 
 	if (!coordinate) return res.sendStatus(404) // internal error
-	return res.json(res.sendStatus(200))
+	return res.sendStatus(200)
 });
 
 module.exports = router

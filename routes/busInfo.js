@@ -5,12 +5,43 @@ router.use(express.json());
 const Masrapt = require('../db/masrapt');
 const { all } = require('./busRoutes');
 
-
+/**
+ * Arrow Function that filter all routes and retunr the route name
+ *  @param all_routes
+ *  @param id_route
+ *  @return The route name
+ * */ 
 const getRouteName = (all_routes, id_route) => {
     const related_route = all_routes.filter( (route) =>{
         return route.id === id_route
     })
     return related_route[0].name
+}
+
+/**
+ * Arrow Function that filter all routes and retunr the route color
+ *  @param all_routes
+ *  @param id_route
+ *  @return The route color
+ * */ 
+const getRouteColor = (all_routes, id_route) => {
+    const related_route = all_routes.filter( (route) =>{
+        return route.id === id_route
+    })
+    return related_route[0].route_color
+}
+
+/**
+ * Arrow Function that filter all routes and retunr the route locations
+ *  @param all_routes
+ *  @param id_route
+ *  @return The route locations
+ * */ 
+const getRoutePlaces = (all_routes, id_route) => {
+    const related_route = all_routes.filter( (route) =>{
+        return route.id === id_route
+    })
+    return related_route[0].locations
 }
 
 router.get('/', express.json(), async (req, res) => {
@@ -39,6 +70,24 @@ router.get('/', express.json(), async (req, res) => {
 	)
 });
 
+router.get('/all_buses_stop', express.json(), async (req, res) => {
+    const all_routes = await Masrapt.get_routes()
+    const all_coordenates = await Masrapt.get_coordinates_that_are_bus_stop()
+
+    return res.json(
+        {
+            busStop: all_coordenates.map((coordinates) =>({
+                longitude: coordinates.longitude,
+                latitude: coordinates.latitude,
+                route_name: getRouteName(all_routes, coordinates.id_route),
+                route_color: getRouteColor(all_routes, coordinates.id_route),
+                bus_stop_name: coordinates.bus_stop_name,
+                sequence_number: coordinates.sequence_number,
+                locations: getRoutePlaces(all_routes, coordinates.id_route)
+            }))
+        }
+    )
+});
 
 router.get('/get_a_busInfo/:id', express.json(), async (req, res) => {
 
@@ -190,7 +239,7 @@ router.delete('/delete/:id', express.json(), async (req, res) => {
 	const busInfo = await Masrapt.delete_busInfo(id)
 
 	if (!busInfo) return res.sendStatus(404) //  internal error
-	return res.json(res.sendStatus(200))
+	return res.sendStatus(200)
 });
 
 module.exports = router
