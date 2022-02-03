@@ -58,7 +58,7 @@ class Threads(Thread):
                 
                 if update_response.status_code == 200:
                     print(f"Id: {id}, Plate: {plate}, Possition: Updated")
-                    bus_id, random_time = self.bus_dict["id"], self.bus_dict["random_time"]
+                    bus_id, random_time = self.bus_dict["id"], random.randint(5, 40)
                     self.bus_dict = requests.get(f"{BASE_URL}bus/get_a_busInfo/{bus_id}")
                     self.bus_dict = self.bus_dict.json()
                     self.bus_dict["random_time"] = random_time
