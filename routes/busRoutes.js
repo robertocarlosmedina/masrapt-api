@@ -25,30 +25,6 @@ router.get('/', express.json(), async (req, res) => {
 	)
 });
 
-// router.get('/all_routes_info', express.json(), async (req, res) => {
-// 	const routes_array = []
-// 	const all_routes = await Masrapt.get_routes()
-
-// 	if (!all_routes) return res.sendStatus(500) // internal error
-
-// 	all_routes.forEach(route => {
-// 		const coordinates = await Masrapt.get_coordinates(route.id);
-// 		coordinates
-// 	});
-
-// 	return res.json(
-// 	    all_routes.map((route) => (
-// 			{
-//             id: route.id, 
-// 			name: route.name, 
-// 			description: route.description, 
-// 			active_bus: route.active_bus, 
-// 			route_timer: route.route_timer, 
-// 			locations: route.locations
-// 		}))
-// 	)
-// });
-
 router.get('/coordinates', express.json(), async (req, res) => {
 	const all_coordinates = await Masrapt.get_coordinates()
 
