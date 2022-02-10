@@ -6,7 +6,7 @@ This API assists an Android application called Masrapt, which serves to control 
 
 ## Installation / How to use
 
-Firts you have cloned this repos.
+First you have cloned this repos.
 Then, in the path of the folder where the clone was made, run the following commands in order.
 
 #### Install the app dependencies
