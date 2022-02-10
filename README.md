@@ -36,8 +36,14 @@ DB_PASSWORD=[your_password]
 DB_CENTRAL_DATABASE=db_masrapt
 ```
 #### Run the API
+- Normal run
 ```sh
 npm start
+```
+
+- Run on a Apache Server
+```sh
+sudo npm start
 ```
 
 #### Simulate Bus Interaction
