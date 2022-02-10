@@ -5,8 +5,23 @@ router.use(express.json());
 const Masrapt = require('../db/masrapt')
 
 
+/**
+ * Arrow Function that return the number o bus on a route
+ *  @param all_bus
+ *  @param id_route
+ *  @return The route name
+ * */ 
+ const getNrBusesONRoute = (all_bus, id_route) => {
+    const buses_on_route = all_bus.filter( (bus) =>{
+        return bus.id_route === id_route && bus.state
+    })
+    return buses_on_route.length
+}
+
+
 router.get('/', express.json(), async (req, res) => {
 	const all_routes = await Masrapt.get_routes()
+	const all_bus = await Masrapt.get_busInfo()
 	// console.log("okokokokokok")
 
 	if (!all_routes) return res.sendStatus(500) // internal error
@@ -17,7 +32,7 @@ router.get('/', express.json(), async (req, res) => {
 				id: route.id, 
 				name: route.name, 
 				description: route.description, 
-				active_bus: route.active_bus, 
+				active_bus: getNrBusesONRoute(all_bus, route.id), 
 				route_timer: route.route_timer, 
 				locations: route.locations
 			}))

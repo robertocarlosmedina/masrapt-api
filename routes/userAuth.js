@@ -43,7 +43,7 @@ router.get('/get_all_users/:id', express.json(), async (req, res) => {
 	const { id } = req.params;
 	const user = await Masrapt.get_users(id)
 
-	if (!user) return res.sendStatus(404) // internal error
+	if (!user  || user.length < 1) return res.sendStatus(404) // internal error
 	return res.json({
         id: user[0].id,
         name: user[0].name,
