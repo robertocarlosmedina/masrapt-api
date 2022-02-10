@@ -40,6 +40,15 @@ DB_CENTRAL_DATABASE=db_masrapt
 npm start
 ```
 
+#### Simulate Bus Interaction
+
+In order to simulate the bus interaction and information update, it's necessary to run the python script on the project.
+**Note: ** If the API not running on localhost, you may need to change the value of the string BASE_URL on the app to the correct URL
+
+```sh
+python simutate_bus_trajetory.py
+```
+
 ## License
 
 This repo use MIT License.
