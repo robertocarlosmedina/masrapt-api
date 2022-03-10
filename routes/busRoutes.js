@@ -18,7 +18,6 @@ const Masrapt = require('../db/masrapt')
     return buses_on_route.length
 }
 
-
 router.get('/', express.json(), async (req, res) => {
 	const all_routes = await Masrapt.get_routes()
 	const all_bus = await Masrapt.get_busInfo()
